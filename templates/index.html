@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NLP Playground</title>
+
+    <!-- ✅ Flask-safe CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script>
+        function showFields() {
+            const task = document.getElementById("task").value;
+
+            // Hide all sections
+            document.querySelectorAll(".task-box").forEach(el => el.style.display = "none");
+
+            // Show required section
+            document.getElementById(task + "-box").style.display = "block";
+        }
+    </script>
+</head>
+
+<body onload="showFields()">
+
+<div class="container">
+
+    <div class="header">
+        <h1>NLP Playground</h1>
+    </div>
+
+    <div class="card">
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <!-- Task Selector -->
+            <label>Select NLP Task</label>
+            <select name="task" id="task" onchange="showFields()">
+                <option value="summarization">Text Summarization</option>
+                <option value="translation">Machine Translation</option>
+                <option value="chatbot">QA System</option>
+                <option value="text_to_sql">Text to SQL</option>
+                <option value="paraphrasing">Text Paraphrasing / Rewriting</option>
+                <option value="grammar">Grammar Correction</option>
+            </select>
+
+            <!-- Model -->
+            <label>Select Model</label>
+            <select name="model">
+                <option value="mistralai/mistral-7b-instruct">Mistral 7B (Recommended)</option>
+                <option value="meta-llama/llama-3-8b-instruct">LLaMA 3 8B</option>
+                <option value="qwen/qwen-2.5-7b-instruct">Qwen 2.5</option>
+                <option value="deepseek/deepseek-chat">DeepSeek Chat</option>
+                <option value="deepseek/deepseek-coder">DeepSeek Coder (SQL)</option>
+            </select>
+
+
+
+            <!-- SUMMARIZATION -->
+            <div class="task-box" id="summarization-box">
+              <label>Enter Text</label>
+              <textarea name="summary_text"></textarea>
+          </div>
+
+            <!-- TRANSLATION -->
+          <div class="task-box" id="translation-box">
+              <label>Text to Translate</label>
+              <textarea name="translation_text"></textarea>
+
+              <label>Target Language</label>
+              <select name="language">
+                  <option value="Hindi">Hindi</option>
+                  <option value="Telugu">Telugu</option>
+                  <option value="English">English</option>
+              </select>
+          </div>
+
+
+            <!-- CHATBOT -->
+            <div class="task-box" id="chatbot-box">
+              <label>Your Message</label>
+              <textarea name="chat_text"></textarea>
+          </div>
+
+
+            <!-- TEXT TO SQL -->
+            <div class="task-box" id="text_to_sql-box">
+              <label>Question</label>
+              <textarea name="sql_question"></textarea>
+
+              <label>Database Schema</label>
+              <textarea name="schema"></textarea>
+          </div>
+
+          <div class="task-box" id="paraphrasing-box">
+            <label>Text to Paraphrase</label>
+            <textarea name="paraphrase_text"></textarea>
+        </div>
+
+        <div class="task-box" id="grammar-box">
+            <label>Text with Grammar Errors</label>
+            <textarea name="grammar_text"></textarea>
+        </div>
+
+
+            <button type="submit">Run AI</button>
+
+        </form>
+    </div>
+
+    <a href="/chatbot" target="_blank">
+        <button type="button">Open Chatbot</button>
+    </a>
+
+
+    <div class="output">
+        <h2>Output</h2>
+        <pre>{{ output }}</pre>
+
+        {% if audio_file %}
+        <audio controls>
+            <source src="{{ audio_file }}" type="audio/wav">
+        </audio>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>
